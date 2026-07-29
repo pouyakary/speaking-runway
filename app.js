@@ -326,8 +326,16 @@ function selectDuration(minutes) {
   }
   elements.durationButtons.forEach((button) => {
     const selected = Number(button.dataset.minutes) === minutes;
+    const wasSelected = button.classList.contains("active");
     button.classList.toggle("active", selected);
     button.setAttribute("aria-pressed", String(selected));
+    if (changed && selected !== wasSelected) {
+      button.classList.remove("duration-button-press", "duration-button-release");
+      void button.offsetWidth;
+      button.classList.add(
+        selected ? "duration-button-press" : "duration-button-release",
+      );
+    }
   });
   resetTimer();
 }
