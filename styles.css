@@ -1,0 +1,306 @@
+:root {
+  color-scheme: dark;
+  font-family: "Arial Narrow", "Roboto Condensed", "Helvetica Neue", Arial, sans-serif;
+  --steel: #c7c8c6;
+  --steel-dark: #6d7072;
+  --face: #414345;
+  --ink: #1d1e20;
+  --paper: #d7d7d2;
+  --runway: #85898a;
+  --landing: #a92429;
+  --orange: #cb622b;
+  --urgent: #dc2028;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+  background: #202123;
+}
+
+body {
+  min-height: 100dvh;
+  color: var(--paper);
+  overscroll-behavior: none;
+  background:
+    linear-gradient(100deg, rgba(255, 255, 255, 0.025), transparent 35%, rgba(0, 0, 0, 0.12)),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.012) 0 1px, transparent 1px 4px),
+    #292a2c;
+}
+
+button {
+  font: inherit;
+}
+
+.app-shell {
+  width: min(100%, 520px);
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding:
+    max(22px, env(safe-area-inset-top))
+    max(20px, env(safe-area-inset-right))
+    max(20px, env(safe-area-inset-bottom))
+    max(20px, env(safe-area-inset-left));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(16px, 3.2vh, 28px);
+}
+
+.duration-panel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: max-content;
+  margin: 0 auto;
+  padding: 5px 6px 5px 12px;
+  border: 1px solid #707274;
+  border-radius: 4px;
+  background: linear-gradient(#8d8f90, #56585a 48%, #3b3d3f 52%, #67696b);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.28), 0 5px 12px rgba(0, 0, 0, 0.28);
+}
+
+.panel-label {
+  color: #e0e1dd;
+  font-size: 0.55rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.duration-options {
+  display: flex;
+  gap: 3px;
+}
+
+.duration-button {
+  min-width: 48px;
+  padding: 8px 10px 7px;
+  border: 1px solid #242527;
+  border-radius: 2px;
+  color: #bbbcb9;
+  background: linear-gradient(#4c4e50, #292a2c);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.1);
+  font-size: 0.84rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.duration-button.active {
+  color: #f0f0eb;
+  border-color: #68161b;
+  background: linear-gradient(#c12d33, #861b21);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.22), 0 0 0 1px #171819;
+}
+
+.timer-region {
+  display: grid;
+  gap: 9px;
+}
+
+.dial-button {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.dial {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.time-sector {
+  fill: var(--runway);
+  transition: fill 500ms ease;
+}
+
+.tick-marks line {
+  stroke: #bfc0bd;
+  stroke-linecap: square;
+}
+
+.dial-numbers text {
+  fill: #d0d1cd;
+  font-size: 35px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  letter-spacing: -0.04em;
+  paint-order: stroke;
+  stroke: rgba(35, 36, 38, 0.32);
+  stroke-width: 1.5px;
+}
+
+.readout {
+  position: absolute;
+  left: 50%;
+  top: 68.5%;
+  transform: translate(-50%, -50%);
+  min-width: 122px;
+  color: #ebebe6;
+  font-size: clamp(1.6rem, 8.4vw, 2.55rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.055em;
+  line-height: 1;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.62);
+}
+
+.stage-card {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: calc(100% - 42px);
+  min-height: 54px;
+  margin: 12px auto 0;
+  padding: 9px 15px;
+  border: 1px solid #66686a;
+  border-radius: 3px;
+  background: linear-gradient(145deg, #3b3d3f, #292a2c);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.08), 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.stage-light {
+  flex: 0 0 auto;
+  width: 10px;
+  height: 10px;
+  border: 1px solid #aeb0ae;
+  border-radius: 50%;
+  background: var(--runway);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--runway), transparent 42%);
+  transition: background 400ms ease, box-shadow 400ms ease;
+}
+
+.stage-name,
+.stage-message {
+  margin: 0;
+}
+
+.stage-name {
+  color: #dfdfda;
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+}
+
+.stage-message {
+  margin-top: 2px;
+  color: #aeb0ad;
+  font-size: 0.72rem;
+  letter-spacing: 0.025em;
+}
+
+body[data-stage="landing"] {
+  --stage-color: var(--landing);
+}
+
+body[data-stage="final"] {
+  --stage-color: var(--orange);
+}
+
+body[data-stage="urgent"],
+body[data-stage="complete"] {
+  --stage-color: var(--urgent);
+}
+
+body[data-stage="landing"] .stage-light,
+body[data-stage="final"] .stage-light,
+body[data-stage="urgent"] .stage-light,
+body[data-stage="complete"] .stage-light {
+  background: var(--stage-color);
+  border-color: color-mix(in srgb, var(--stage-color), white 25%);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--stage-color), transparent 32%);
+}
+
+body[data-stage="urgent"] .stage-card {
+  animation: urgent-pulse 1.3s ease-in-out infinite;
+}
+
+body[data-stage="complete"] .stage-card {
+  border-color: #9e2228;
+}
+
+@keyframes urgent-pulse {
+  50% {
+    border-color: #9d252a;
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.08), 0 0 15px rgba(201, 32, 39, 0.24);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 9px;
+}
+
+.control-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 12px;
+  border: 1px solid #5e6062;
+  border-radius: 3px;
+  color: #c7c8c4;
+  background: linear-gradient(#3b3d3f, #242527);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.08);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.control-button svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+}
+
+.sound-button[aria-pressed="false"] {
+  color: #7f8181;
+}
+
+@media (max-height: 700px) {
+  .app-shell {
+    gap: 7px;
+    padding-top: max(10px, env(safe-area-inset-top));
+    padding-bottom: max(10px, env(safe-area-inset-bottom));
+  }
+
+  .dial-button {
+    width: min(100%, 58vh);
+    margin: 0 auto;
+  }
+
+  .stage-card {
+    min-height: 47px;
+  }
+}

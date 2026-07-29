@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#292a2c" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Speaking Runway" />
+    <meta name="description" content="A visual speaking timer that helps you land on time." />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="./assets/icon-180.png" />
+    <link rel="icon" href="./assets/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles.css" />
+    <title>Speaking Runway</title>
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="duration-panel" aria-label="Choose speaking time">
+        <span class="panel-label">MINUTES</span>
+        <div class="duration-options" role="group" aria-label="Timer duration">
+          <button class="duration-button" type="button" data-minutes="10">10</button>
+          <button class="duration-button active" type="button" data-minutes="15">15</button>
+          <button class="duration-button" type="button" data-minutes="20">20</button>
+        </div>
+      </section>
+
+      <section class="timer-region" aria-label="Speaking timer">
+        <button class="dial-button" id="dialButton" type="button" aria-label="Start timer">
+          <svg class="dial" id="dial" viewBox="0 0 600 600" role="img" aria-labelledby="dialTitle dialDescription">
+            <title id="dialTitle">Circular speaking timer</title>
+            <desc id="dialDescription">A mechanical clock face showing the remaining speaking time.</desc>
+            <defs>
+              <radialGradient id="outerMetal" cx="38%" cy="30%" r="75%">
+                <stop offset="0" stop-color="#f1f1ee" />
+                <stop offset=".18" stop-color="#aeb0b0" />
+                <stop offset=".54" stop-color="#55575a" />
+                <stop offset=".76" stop-color="#d1d1cd" />
+                <stop offset="1" stop-color="#77797b" />
+              </radialGradient>
+              <radialGradient id="hubMetal" cx="38%" cy="33%" r="70%">
+                <stop offset="0" stop-color="#e7e7e3" />
+                <stop offset=".4" stop-color="#a6a8a8" />
+                <stop offset=".72" stop-color="#d1d1ce" />
+                <stop offset="1" stop-color="#747678" />
+              </radialGradient>
+              <linearGradient id="glassSheen" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#fff" stop-opacity=".18" />
+                <stop offset=".42" stop-color="#fff" stop-opacity="0" />
+                <stop offset="1" stop-color="#000" stop-opacity=".14" />
+              </linearGradient>
+              <filter id="dialShadow" x="-30%" y="-30%" width="160%" height="170%">
+                <feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#000" flood-opacity=".48" />
+              </filter>
+              <filter id="sectorShadow" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000" flood-opacity=".32" />
+              </filter>
+              <filter id="metalNoise" x="0" y="0" width="100%" height="100%">
+                <feTurbulence type="fractalNoise" baseFrequency=".75" numOctaves="2" seed="8" result="noise" />
+                <feColorMatrix in="noise" type="saturate" values="0" result="mono" />
+                <feBlend in="SourceGraphic" in2="mono" mode="soft-light" />
+              </filter>
+            </defs>
+
+            <g filter="url(#dialShadow)">
+              <circle cx="300" cy="300" r="287" fill="url(#outerMetal)" stroke="#303133" stroke-width="3" />
+              <circle cx="300" cy="300" r="267" fill="#141516" stroke="#747679" stroke-width="7" />
+              <circle cx="300" cy="300" r="254" fill="#3f4143" stroke="#050506" stroke-width="4" />
+              <circle cx="300" cy="300" r="247" fill="#454749" />
+              <path id="timeSector" class="time-sector" d="" filter="url(#sectorShadow)" />
+              <g id="tickMarks" class="tick-marks" aria-hidden="true"></g>
+              <g id="dialNumbers" class="dial-numbers" aria-hidden="true"></g>
+              <circle cx="300" cy="300" r="247" fill="url(#glassSheen)" pointer-events="none" />
+              <g class="hub" filter="url(#sectorShadow)">
+                <circle cx="300" cy="300" r="67" fill="url(#hubMetal)" stroke="#d9d9d5" stroke-width="2" />
+                <circle cx="300" cy="300" r="58" fill="none" stroke="#77797a" stroke-width="1" opacity=".55" />
+                <circle cx="300" cy="300" r="47" fill="none" stroke="#888a8b" stroke-width=".7" opacity=".5" />
+                <circle cx="300" cy="300" r="35" fill="none" stroke="#8f9192" stroke-width=".7" opacity=".45" />
+                <circle cx="300" cy="300" r="4" fill="#696b6c" stroke="#d5d5d1" stroke-width="1" />
+              </g>
+            </g>
+          </svg>
+
+          <span class="readout" id="timeReadout">15:00</span>
+        </button>
+
+        <div class="stage-card" id="stageCard" aria-live="polite">
+          <span class="stage-light" aria-hidden="true"></span>
+          <div>
+            <p class="stage-name" id="stageName">READY</p>
+            <p class="stage-message" id="stageMessage">Your runway is clear.</p>
+          </div>
+        </div>
+      </section>
+
+      <footer class="controls">
+        <button class="control-button sound-button" id="soundButton" type="button" aria-pressed="true">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M4 10v4h4l5 4V6L8 10H4zm12-1c1.5 1.7 1.5 4.3 0 6m2.8-8.5c3 3.1 3 7.9 0 11" />
+          </svg>
+          <span>SOUND ON</span>
+        </button>
+        <button class="control-button reset-button" id="resetButton" type="button">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M5 8v-4m0 0h4M5 4l3.2 3.2a7 7 0 1 1-1.7 7.2" />
+          </svg>
+          <span>RESET</span>
+        </button>
+      </footer>
+    </main>
+
+    <audio id="runwayMusic" src="./assets/sound.mp3" preload="auto"></audio>
+    <script src="./app.js" defer></script>
+  </body>
+</html>

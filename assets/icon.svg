@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="steel" cx="35%" cy="28%" r="75%">
+      <stop offset="0" stop-color="#eee"/>
+      <stop offset=".32" stop-color="#999b9c"/>
+      <stop offset=".7" stop-color="#d4d4d0"/>
+      <stop offset="1" stop-color="#616365"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" rx="104" fill="#292a2c"/>
+  <circle cx="256" cy="256" r="213" fill="url(#steel)" stroke="#111214" stroke-width="7"/>
+  <circle cx="256" cy="256" r="190" fill="#424446" stroke="#111214" stroke-width="10"/>
+  <path d="M256 256V66A190 190 0 0 1 446 256Z" fill="#ad252b"/>
+  <g stroke="#d1d2ce" stroke-width="8">
+    <path d="M256 77v25M351 102l-13 22M421 172l-22 13M446 256h-25M421 351l-22-13M351 421l-13-22M256 446v-25M161 421l13-22M91 351l22-13M66 256h25M91 161l22 13M161 91l13 22"/>
+  </g>
+  <circle cx="256" cy="256" r="55" fill="url(#steel)" stroke="#e2e2de" stroke-width="3"/>
+  <circle cx="256" cy="256" r="5" fill="#626466"/>
+</svg>
