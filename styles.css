@@ -1,6 +1,22 @@
+@font-face {
+  font-family: "PT Sans Narrow";
+  src: url("./assets/PTSansNarrow-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PT Sans Narrow";
+  src: url("./assets/PTSansNarrow-Bold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
 :root {
   color-scheme: dark;
-  font-family: "Arial Narrow", "Roboto Condensed", "Helvetica Neue", Arial, sans-serif;
+  font-family: "PT Sans Narrow", sans-serif;
   --steel: #c7c8c6;
   --steel-dark: #6d7072;
   --face: #414345;
@@ -29,8 +45,17 @@ body {
   color: var(--paper);
   overscroll-behavior: none;
   background:
-    linear-gradient(100deg, rgba(255, 255, 255, 0.025), transparent 35%, rgba(0, 0, 0, 0.12)),
-    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.012) 0 1px, transparent 1px 4px),
+    linear-gradient(
+      100deg,
+      rgba(255, 255, 255, 0.025),
+      transparent 35%,
+      rgba(0, 0, 0, 0.12)
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.012) 0 1px,
+      transparent 1px 4px
+    ),
     #292a2c;
 }
 
@@ -42,10 +67,8 @@ button {
   width: min(100%, 520px);
   min-height: 100dvh;
   margin: 0 auto;
-  padding:
-    max(22px, env(safe-area-inset-top))
-    max(20px, env(safe-area-inset-right))
-    max(20px, env(safe-area-inset-bottom))
+  padding: max(22px, env(safe-area-inset-top))
+    max(20px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom))
     max(20px, env(safe-area-inset-left));
   display: flex;
   flex-direction: column;
@@ -58,18 +81,20 @@ button {
   align-items: center;
   gap: 10px;
   width: max-content;
-  margin: 0 auto;
+  margin: 0 auto 12px;
   padding: 5px 6px 5px 12px;
   border: 1px solid #707274;
   border-radius: 4px;
   background: linear-gradient(#8d8f90, #56585a 48%, #3b3d3f 52%, #67696b);
-  box-shadow: inset 0 1px rgba(255, 255, 255, 0.28), 0 5px 12px rgba(0, 0, 0, 0.28);
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.28),
+    0 5px 12px rgba(0, 0, 0, 0.28);
 }
 
 .panel-label {
   color: #e0e1dd;
   font-size: 0.55rem;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: 0.14em;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 }
@@ -88,7 +113,7 @@ button {
   background: linear-gradient(#4c4e50, #292a2c);
   box-shadow: inset 0 1px rgba(255, 255, 255, 0.1);
   font-size: 0.84rem;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.04em;
 }
 
@@ -96,7 +121,9 @@ button {
   color: #f0f0eb;
   border-color: #68161b;
   background: linear-gradient(#c12d33, #861b21);
-  box-shadow: inset 0 1px rgba(255, 255, 255, 0.22), 0 0 0 1px #171819;
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.22),
+    0 0 0 1px #171819;
 }
 
 .timer-region {
@@ -156,7 +183,6 @@ button {
   font-size: clamp(1.6rem, 8.4vw, 2.55rem);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.055em;
   line-height: 1;
   text-shadow: 0 2px 3px rgba(0, 0, 0, 0.62);
 }
@@ -165,14 +191,16 @@ button {
   display: flex;
   align-items: center;
   gap: 11px;
-  width: calc(100% - 42px);
+  width: calc(50%);
   min-height: 54px;
-  margin: 12px auto 0;
+  margin: 12px auto 12px;
   padding: 9px 15px;
   border: 1px solid #66686a;
   border-radius: 3px;
   background: linear-gradient(145deg, #3b3d3f, #292a2c);
-  box-shadow: inset 0 1px rgba(255, 255, 255, 0.08), 0 4px 10px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.08),
+    0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .stage-light {
@@ -183,7 +211,9 @@ button {
   border-radius: 50%;
   background: var(--runway);
   box-shadow: 0 0 8px color-mix(in srgb, var(--runway), transparent 42%);
-  transition: background 400ms ease, box-shadow 400ms ease;
+  transition:
+    background 400ms ease,
+    box-shadow 400ms ease;
 }
 
 .stage-name,
@@ -194,7 +224,7 @@ button {
 .stage-name {
   color: #dfdfda;
   font-size: 0.74rem;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: 0.15em;
 }
 
@@ -238,7 +268,9 @@ body[data-stage="complete"] .stage-card {
 @keyframes urgent-pulse {
   50% {
     border-color: #9d252a;
-    box-shadow: inset 0 1px rgba(255, 255, 255, 0.08), 0 0 15px rgba(201, 32, 39, 0.24);
+    box-shadow:
+      inset 0 1px rgba(255, 255, 255, 0.08),
+      0 0 15px rgba(201, 32, 39, 0.24);
   }
 }
 
@@ -270,7 +302,7 @@ body[data-stage="complete"] .stage-card {
   background: linear-gradient(#3b3d3f, #242527);
   box-shadow: inset 0 1px rgba(255, 255, 255, 0.08);
   font-size: 0.62rem;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.1em;
 }
 

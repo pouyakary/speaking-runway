@@ -1,4 +1,4 @@
-const CACHE_NAME = "speaking-runway-v2";
+const CACHE_NAME = "speaking-runway-v4";
 const OFFLINE_ASSETS = [
   "./",
   "./index.html",
@@ -9,6 +9,8 @@ const OFFLINE_ASSETS = [
   "./assets/icon-180.png",
   "./assets/icon-192.png",
   "./assets/icon-512.png",
+  "./assets/PTSansNarrow-Regular.ttf",
+  "./assets/PTSansNarrow-Bold.ttf",
   "./assets/sound.mp3",
 ];
 
