@@ -1,12 +1,15 @@
 const STAGES = {
-  ready: { name: "READY", message: "Your runway is clear.", color: "#85898a" },
-  speaking: { name: "SPEAK FREELY", message: "You have room. Stay with your thought.", color: "#85898a" },
-  landing: { name: "BEGIN LANDING", message: "Turn toward the point you want remembered.", color: "#a92429" },
-  final: { name: "FINAL POINT", message: "Deliver the conclusion now.", color: "#cb622b" },
-  urgent: { name: "WRAP NOW", message: "Finish this sentence. Music is rising.", color: "#dc2028" },
-  paused: { name: "PAUSED", message: "Tap the dial when you are ready.", color: "#85898a" },
-  complete: { name: "TIME", message: "You landed.", color: "#dc2028" },
+  ready: { color: "#85898a" },
+  speaking: { color: "#85898a" },
+  landing: { color: "#a92429" },
+  final: { color: "#cb622b" },
+  urgent: { color: "#dc2028" },
+  paused: { color: "#85898a" },
+  complete: { color: "#dc2028" },
 };
+
+const DURATIONS = [10, 15, 20, 30, 60];
+const DIAL_FADE_MS = 90;
 
 const elements = {
   body: document.body,
@@ -15,8 +18,6 @@ const elements = {
   dialNumbers: document.querySelector("#dialNumbers"),
   dialButton: document.querySelector("#dialButton"),
   timeReadout: document.querySelector("#timeReadout"),
-  stageName: document.querySelector("#stageName"),
-  stageMessage: document.querySelector("#stageMessage"),
   durationButtons: [...document.querySelectorAll(".duration-button")],
   soundButton: document.querySelector("#soundButton"),
   soundLabel: document.querySelector("#soundButton span"),
@@ -25,7 +26,7 @@ const elements = {
 };
 
 const savedDuration = Number(localStorage.getItem("runway-duration"));
-let durationMinutes = [10, 15, 20].includes(savedDuration) ? savedDuration : 15;
+let durationMinutes = DURATIONS.includes(savedDuration) ? savedDuration : 15;
 let totalMs = durationMinutes * 60_000;
 let remainingMs = totalMs;
 let endTime = 0;
@@ -36,6 +37,8 @@ let audioContext = null;
 let wakeLock = null;
 let holdTimer = null;
 let suppressNextDialClick = false;
+let dialInitialized = false;
+let dialTransitionId = 0;
 let soundEnabled = localStorage.getItem("runway-sound") !== "off";
 const announcedStages = new Set();
 
@@ -57,12 +60,15 @@ function sectorPath(fractionRemaining) {
   return `M 300 300 L ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArc} 1 ${end.x} ${end.y} Z`;
 }
 
-function buildDial(minutes) {
+function buildDial(minutes, animate = false) {
   const svgNS = "http://www.w3.org/2000/svg";
   const tickCount = minutes * 2;
-  const labelStep = minutes === 10 ? 2 : minutes === 15 ? 3 : 5;
+  const labelStep = minutes === 10 ? 2 : minutes === 15 ? 3 : minutes <= 30 ? 5 : 10;
+  const revealStepMs = Math.min(14, 600 / tickCount);
   elements.tickMarks.replaceChildren();
   elements.dialNumbers.replaceChildren();
+  elements.tickMarks.classList.remove("dial-face-leaving");
+  elements.dialNumbers.classList.remove("dial-face-leaving");
 
   for (let tick = 0; tick < tickCount; tick += 1) {
     const line = document.createElementNS(svgNS, "line");
@@ -78,6 +84,11 @@ function buildDial(minutes) {
     line.setAttribute("y2", inner.y);
     line.setAttribute("stroke-width", labelled ? "8" : major ? "5" : "3");
     line.setAttribute("opacity", major ? ".95" : ".8");
+    if (animate) {
+      line.classList.add("dial-mark-enter");
+      line.style.setProperty("--mark-opacity", major ? ".95" : ".8");
+      line.style.setProperty("--reveal-delay", `${tick * revealStepMs}ms`);
+    }
     elements.tickMarks.append(line);
   }
 
@@ -87,8 +98,31 @@ function buildDial(minutes) {
     label.setAttribute("x", point.x);
     label.setAttribute("y", point.y);
     label.textContent = minute;
+    if (animate) {
+      label.classList.add("dial-mark-enter");
+      label.style.setProperty("--mark-opacity", "1");
+      label.style.setProperty("--reveal-delay", `${minute * 2 * revealStepMs}ms`);
+    }
     elements.dialNumbers.append(label);
   }
+}
+
+function transitionDial(minutes) {
+  const transitionId = ++dialTransitionId;
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (reduceMotion) {
+    buildDial(minutes);
+    return;
+  }
+
+  elements.tickMarks.classList.add("dial-face-leaving");
+  elements.dialNumbers.classList.add("dial-face-leaving");
+
+  window.setTimeout(() => {
+    if (transitionId !== dialTransitionId) return;
+    buildDial(minutes, true);
+  }, DIAL_FADE_MS);
 }
 
 function formatTime(milliseconds) {
@@ -113,8 +147,6 @@ function setStage(stage, announce = false) {
   const details = STAGES[stage];
   elements.body.dataset.stage = stage;
   elements.sector.style.fill = details.color;
-  elements.stageName.textContent = details.name;
-  elements.stageMessage.textContent = details.message;
 
   if (announce && !announcedStages.has(stage)) {
     announcedStages.add(stage);
@@ -283,9 +315,15 @@ function toggleTimer() {
 }
 
 function selectDuration(minutes) {
+  const changed = minutes !== durationMinutes;
   durationMinutes = minutes;
   localStorage.setItem("runway-duration", String(minutes));
-  buildDial(minutes);
+  if (!dialInitialized) {
+    buildDial(minutes);
+    dialInitialized = true;
+  } else if (changed) {
+    transitionDial(minutes);
+  }
   elements.durationButtons.forEach((button) => {
     const selected = Number(button.dataset.minutes) === minutes;
     button.classList.toggle("active", selected);

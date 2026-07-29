@@ -1,4 +1,4 @@
-const CACHE_NAME = "speaking-runway-v5";
+const CACHE_NAME = "speaking-runway-v9";
 const OFFLINE_ASSETS = [
   "./",
   "./index.html",

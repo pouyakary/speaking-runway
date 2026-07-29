@@ -1,6 +1,6 @@
 # Speaking Runway
 
-An offline visual speaking timer for 10, 15, and 20-minute sessions.
+An offline visual speaking timer for 10, 15, 20, 30, and 60-minute sessions.
 
 ## Run locally
 

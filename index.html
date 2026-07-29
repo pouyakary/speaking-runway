@@ -24,19 +24,6 @@
 
 <body>
   <main class="app-shell">
-    <section class="duration-panel" aria-label="Choose speaking time">
-      <span class="panel-label">MINUTES</span>
-      <div class="duration-options" role="group"
-        aria-label="Timer duration">
-        <button class="duration-button" type="button"
-          data-minutes="10">10</button>
-        <button class="duration-button active" type="button"
-          data-minutes="15">15</button>
-        <button class="duration-button" type="button"
-          data-minutes="20">20</button>
-      </div>
-    </section>
-
     <section class="timer-region" aria-label="Speaking timer">
       <button class="dial-button" id="dialButton" type="button"
         aria-label="Start timer">
@@ -120,14 +107,22 @@
         <span class="readout" id="timeReadout">15:00</span>
       </button>
 
-      <div class="stage-card" id="stageCard" aria-live="polite">
-        <span class="stage-light" aria-hidden="true"></span>
-        <div>
-          <p class="stage-name" id="stageName">READY</p>
-          <p class="stage-message" id="stageMessage">Your runway is
-            clear.</p>
+      <section class="duration-panel" aria-label="Choose speaking time">
+        <span class="panel-label">MINUTES</span>
+        <div class="duration-options" role="group"
+          aria-label="Timer duration">
+          <button class="duration-button" type="button"
+            data-minutes="10">10</button>
+          <button class="duration-button active" type="button"
+            data-minutes="15">15</button>
+          <button class="duration-button" type="button"
+            data-minutes="20">20</button>
+          <button class="duration-button" type="button"
+            data-minutes="30">30</button>
+          <button class="duration-button" type="button"
+            data-minutes="60">60</button>
         </div>
-      </div>
+      </section>
     </section>
 
     <footer class="controls">

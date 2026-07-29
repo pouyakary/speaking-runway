@@ -93,10 +93,10 @@ button {
   flex: 0 0 auto;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 7px;
   width: max-content;
-  margin: 0 auto 12px;
-  padding: 5px 6px 5px 12px;
+  margin: 17px auto 20px;
+  padding: 4px 5px 4px 9px;
   border: 1px solid #707274;
   border-radius: 4px;
   background: linear-gradient(#8d8f90, #56585a 48%, #3b3d3f 52%, #67696b);
@@ -107,7 +107,7 @@ button {
 
 .panel-label {
   color: #e0e1dd;
-  font-size: 0.55rem;
+  font-size: 0.48rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
@@ -119,14 +119,14 @@ button {
 }
 
 .duration-button {
-  min-width: 48px;
-  padding: 8px 10px 7px;
+  min-width: 40px;
+  padding: 6px 7px 5px;
   border: 1px solid #242527;
   border-radius: 2px;
   color: #bbbcb9;
   background: linear-gradient(#4c4e50, #292a2c);
   box-shadow: inset 0 1px rgba(255, 255, 255, 0.1);
-  font-size: 0.84rem;
+  font-size: 0.74rem;
   font-weight: 700;
   letter-spacing: 0.04em;
 }
@@ -176,6 +176,16 @@ button {
   stroke-linecap: square;
 }
 
+.dial-face-leaving {
+  animation: dial-face-fade 90ms ease-in forwards;
+}
+
+.dial-mark-enter {
+  animation: dial-mark-reveal 90ms ease-out var(--reveal-delay) both;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
 .dial-numbers text {
   fill: #d0d1cd;
   font-size: 35px;
@@ -186,6 +196,24 @@ button {
   paint-order: stroke;
   stroke: rgba(35, 36, 38, 0.32);
   stroke-width: 1.5px;
+}
+
+@keyframes dial-face-fade {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes dial-mark-reveal {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+
+  to {
+    opacity: var(--mark-opacity, 1);
+    transform: scale(1);
+  }
 }
 
 .readout {
@@ -202,99 +230,13 @@ button {
   text-shadow: 0 2px 3px rgba(0, 0, 0, 0.62);
 }
 
-.stage-card {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  width: calc(50%);
-  min-height: 54px;
-  margin: 12px auto 12px;
-  padding: 9px 15px;
-  border: 1px solid #66686a;
-  border-radius: 3px;
-  background: linear-gradient(145deg, #3b3d3f, #292a2c);
-  box-shadow:
-    inset 0 1px rgba(255, 255, 255, 0.08),
-    0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-.stage-light {
-  flex: 0 0 auto;
-  width: 10px;
-  height: 10px;
-  border: 1px solid #aeb0ae;
-  border-radius: 50%;
-  background: var(--runway);
-  box-shadow: 0 0 8px color-mix(in srgb, var(--runway), transparent 42%);
-  transition:
-    background 400ms ease,
-    box-shadow 400ms ease;
-}
-
-.stage-name,
-.stage-message {
-  margin: 0;
-}
-
-.stage-name {
-  color: #dfdfda;
-  font-size: 0.74rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-}
-
-.stage-message {
-  margin-top: 2px;
-  color: #aeb0ad;
-  font-size: 0.72rem;
-  letter-spacing: 0.025em;
-}
-
-body[data-stage="landing"] {
-  --stage-color: var(--landing);
-}
-
-body[data-stage="final"] {
-  --stage-color: var(--orange);
-}
-
-body[data-stage="urgent"],
-body[data-stage="complete"] {
-  --stage-color: var(--urgent);
-}
-
-body[data-stage="landing"] .stage-light,
-body[data-stage="final"] .stage-light,
-body[data-stage="urgent"] .stage-light,
-body[data-stage="complete"] .stage-light {
-  background: var(--stage-color);
-  border-color: color-mix(in srgb, var(--stage-color), white 25%);
-  box-shadow: 0 0 12px color-mix(in srgb, var(--stage-color), transparent 32%);
-}
-
-body[data-stage="urgent"] .stage-card {
-  animation: urgent-pulse 1.3s ease-in-out infinite;
-}
-
-body[data-stage="complete"] .stage-card {
-  border-color: #9e2228;
-}
-
-@keyframes urgent-pulse {
-  50% {
-    border-color: #9d252a;
-    box-shadow:
-      inset 0 1px rgba(255, 255, 255, 0.08),
-      0 0 15px rgba(201, 32, 39, 0.24);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
     scroll-behavior: auto !important;
     animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
@@ -304,7 +246,7 @@ body[data-stage="complete"] .stage-card {
   flex: 0 0 auto;
   display: flex;
   justify-content: center;
-  gap: 9px;
+  gap: 12px;
 }
 
 .control-button {
@@ -336,6 +278,18 @@ body[data-stage="complete"] .stage-card {
   color: #7f8181;
 }
 
+@media (max-width: 390px) {
+  .duration-panel {
+    gap: 5px;
+    padding-left: 7px;
+  }
+
+  .duration-button {
+    min-width: 36px;
+    padding-inline: 5px;
+  }
+}
+
 @media (max-height: 700px) {
   .app-shell {
     gap: 7px;
@@ -346,9 +300,5 @@ body[data-stage="complete"] .stage-card {
   .dial-button {
     width: min(100%, 58vh);
     margin: 0 auto;
-  }
-
-  .stage-card {
-    min-height: 47px;
   }
 }
